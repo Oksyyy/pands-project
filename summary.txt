@@ -37,7 +37,7 @@ Max:		2.5
 Class
 
 Unique values:	['Iris-setosa' 'Iris-versicolor' 'Iris-virginica']
-Value counts:
+Value Frequency:
 class
 Iris-setosa        50
 Iris-versicolor    50

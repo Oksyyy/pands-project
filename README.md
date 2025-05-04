@@ -33,3 +33,4 @@ All necessary packages are imported and explained within the notebook. Here's a 
 - [numpy](https://numpy.org/doc/stable/): used for numerical operations and data array manipulations.
 - [matplotlib.pyplot](https://matplotlib.org/): used for creating plots and visualisations.
 - [seaborn](https://seaborn.pydata.org/index.html): used for creating plots and visualisations.
+- [itertools.combinations](https://docs.python.org/3/library/itertools.html): used to generate all possible pairs of features for plotting and analysis.

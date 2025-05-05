@@ -1,32 +1,30 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from itertools import combinations as comb
 
-# Pass the file name when calling pandas read_csv() function
-# Specifing separator is optional in this case as pandas automatically detects commas
-# The file doesn't include a header row as confirmed by checking the original data source
-# Column names were manually assigned based on iris.names metadata file
+# Import the dataset
 iris_df = pd.read_csv("iris.data", sep=',', names=['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class'])
+
+# Assign the list of features (columns) to a variable to be used further inside various functions as part of our analysis
+features = iris_df.columns
 
 """
 Write a function that takes a list of features and returns a string with summary statistics for each feature.
 """
 def summary_stats(features):
-    # Initialize an empty string for the function to append the summary of each feature 
-    summary_string = ""
+    # Initialize a string with a title for the function to append the summary of each feature 
+    summary_string = "IRIS DATASET FEATURE SUMMARY\n\n"
 
     # Iterate through each feature (column) in the list of features using a for loop
-    # Feature names are stored in the variable "features" defined outside the function
     for column in features:
 
         # Since the function performs certain calculations based on the column data type defined within the if/elif blocks, use try-except to handle any potential data type errors
-        # The try block contains the code that might raise an error
         try:
 
             # We know that Iris dataset contains numerical and categorical data
             # We can check the data type of each column using the if function and the dtype attribute
-            # [] is used to access the column in the dataframe
             if iris_df[column].dtype == 'float64':
                 
                 # For numerical data, use pandas.DataFrame functions to calculate summary statistics: mean, median, standard deviation, min, and max
@@ -37,15 +35,12 @@ def summary_stats(features):
                 max = iris_df[column].max() 
 
                 # Create a summary string for the numerical feature using f-string formatting 
-                # To dynamically create the string we pass the column name in the first line followed by the calculated statistics values
-                # The \n character is used to create a new line in the string for readability 
-                # The \t character is used to create a tab space in the string - it allows to align calculated values so the output looks neat
                 feature_summary = (f'{column}\n\n'
-                            f'Mean:\t\t{mean}\n'
-                            f'Median:\t\t{median}\n'
-                            f'Std Dev:\t{st_dev}\n' 
-                            f'Min:\t\t{min}\n' 
-                            f'Max:\t\t{max}')
+                            f'Mean:\t\t{mean:.2f}\n'
+                            f'Median:\t\t{median:.2f}\n'
+                            f'Std Dev:\t{st_dev:.2f}\n' 
+                            f'Min:\t\t{min:.2f}\n' 
+                            f'Max:\t\t{max:.2f}')
                 
             # Using elif instead of else to give the function a different instruction for a specific data type 
             elif iris_df[column].dtype == 'object':
@@ -60,11 +55,9 @@ def summary_stats(features):
                             f'Value Frequency:\n{frequency}')
 
             # Append the summary string for each feature to the summary_string variable
-            # Add two new lines to separate each feature summary for readability
             summary_string += feature_summary + "\n\n"
         
         # The except block is executed if an error occurs in the try block
-        # It outputs a alert string if the program encounterred any other data type other than float64 or object
         except:
             feature_summary = (f'{column}\n\n'
                  f"Summary could not be created for {column} due to unsupported data type {iris_df[column].dtype}")
@@ -74,12 +67,12 @@ def summary_stats(features):
     
     # Return the summary_string variable containing the summary for all features
     return summary_string 
-    
-# Assign the list of features (columns) to a variable to be used inside the summary stats function
-features = iris_df.columns
 
-# Call the summary_stats function and pass the features variable to it
-summary_stats(features)
+# Call the summary_stats function to store the summary statistics output
+summary_output = summary_stats(features)
+
+# Print the summary output
+print(summary_output)
 
 # Initiate a variable to store the summary statistics in a text file
 filename = 'summary.txt'
@@ -87,7 +80,7 @@ filename = 'summary.txt'
 # Open the file in write mode using the with statement
 with open(filename,'w') as f:
     # Call the summary_stats function that outputs the summary for each feature into the file
-    f.write(summary_stats(features))
+    f.write(summary_output)
 
 """
 Write a function that takes a list of features, generates a histogram for each feature and saves it into a .png file
@@ -95,16 +88,11 @@ Write a function that takes a list of features, generates a histogram for each f
 def feature_hist(features):
 
     # Create a list of colors to be used for histograms
-    # This allows to set a different color for each feature histogram to make them visually distinct
     colors = ['blue', 'green', 'red', 'orange', 'purple']
     
     # Set a for loop to iterate through:
     #   1. Each color from the "colors" list defined above,
     #   2. Eeach feature (column) in the list of features defined outside the function
-    # Use the enumerate() function to add a counter along with feature names passed through the features variable
-    # The enumerate() function returns both the index and the value of each item in the list
-    # The counter (or index) is used to select the color from the colors list
-    # The feature name (or column) is used to access feature values in the dataframe
     for i, column in enumerate(features):
 
         # Use try-except to handle any potential errors
@@ -114,25 +102,16 @@ def feature_hist(features):
             if iris_df[column].dtype == 'float64':
 
                 # Initiate an empty figure as a placeholder for each feature histogram
-                # This allows to create a new figure for each histogram and to avoid overlapping histogrmas on the same figure
                 plt.figure() 
 
                 # Create variable "color" to pass it as an argument to the histogram 
-                # Use counter [i] along with the modulo operator % to select a color from the colors list above
-                # The modulo operator % returns the remainder of the division of i by the length of the colors list
-                # This allows to cycle through the colors list. The same color can be used for multiple histograms if there are more features than colors
                 color = colors[i % len(colors)]
 
                 # Use Matplotlib to plot a histogram 
-                # bins is an optional parameter, default = 10
-                # The color and edgecolor parameters are used to set the color of the bars and the color of the edges respectively (also optional parameters)
                 plt.hist(iris_df[column], color = color, bins=20, edgecolor = 'gray')
 
                 # Set axes labels using xlabel() and ylabel() functions
-                # For x axis we use the column name and add a unit of measurement (cm)
                 plt.xlabel(f"{column} (cm)")
-
-                # For y axis we use the count of values, i.e. frequency of how many times each flower with a particular measure appears in the dataset
                 plt.ylabel('Frequency')
 
                 # Add title
@@ -140,6 +119,9 @@ def feature_hist(features):
 
                 # The savefig() function saves the plot to a file as ".png"
                 plt.savefig(f'Hist_{column}.png')
+
+                # Show the plot
+                plt.show()
             
             elif iris_df[column].dtype == 'object':
 
@@ -149,25 +131,25 @@ def feature_hist(features):
                 # Plot a different histogram for categorical data
                 plt.hist(iris_df[column], color = 'purple', edgecolor = 'gray')
 
-                # For x axis we use the column name
+                # Set axes labels using xlabel() and ylabel() functions
                 plt.xlabel(f'{column}')
-
-                # For y axis we use the count of values, i.e. frequency of how many times each flower appears in the dataset
                 plt.ylabel('Frequency')
 
                 # Add title 
                 plt.title('Iris Species')
                 
                 # Save file as ".png"
-                plt.savefig(f'Hist_{column}.png')          
+                plt.savefig(f'Hist_{column}.png')
+
+                # Show the plot         
+                plt.show()   
+
+                # Close the plot
+                plt.close()       
        
         # The except block is executed if an error occurs in the try block
-        # It outputs a message
         except:
             print(f'Histogram could not be created for feature {column} due to unsupported data type {iris_df[column].dtype}')
-    
-# Assign the list of features (columns) to a variable to be used inside the summary stats function
-features = iris_df.columns
 
 # Call the feature_hist function and pass the features variable to it
 feature_hist(features)
@@ -176,17 +158,14 @@ feature_hist(features)
 Write a function that takes a list of features and returns a scatter plot for each pair of features. 
 This function will handle only numerical features and will skip any non-numerical to keep analysis forcusing on useful insights
 """
-def feature_scatter(features):
+def feature_scatter_basic(features):
 
     # Set a for loop to iterate through:
     #   1. Each pair of features (columns) in the list of features defined outside the function
-    # Use the itertools.combinations() function to create all possible pairs of features
-    # This function was imported at the beginning of the script
     for x, y in comb(features, 2):
 
         # Check the data type of each column using the if function and the dtype attribute
         # If data type is not float64, skip the iteration using continue statement
-        # This also replaces the need for try-except for error handling
         if iris_df[x].dtype != 'float64' or iris_df[y].dtype != 'float64':
             continue
         
@@ -194,9 +173,6 @@ def feature_scatter(features):
         plt.figure() 
 
         # Create a scatter plot 
-        # Pass iris_df dataframe, x & y combinations
-        # "hue" argument automatically maps distinct colors to each unique class value
-        # "marker" sets the data points to triangle shapes
         sns.scatterplot(data=iris_df, x = x, y = y, hue='class', marker='v')
 
         # Set axes labels 
@@ -206,11 +182,106 @@ def feature_scatter(features):
         # Add title
         plt.title(f'{x} vs {y} relationship')
 
-        # The savefig() function saves the plot to a file as ".png"
-        plt.savefig(f'Scatter_{x} vs {y}.png') 
-    
-# Assign the list of features (columns) to a variable to be used inside the summary stats function
-features = iris_df.columns 
+        # Show the plot
+        plt.show() 
 
-# Call the feature_scatter function and pass the features variable to it
-feature_scatter(features)
+        # Close the plot
+        plt.close()
+
+# Call the feature_scatter_basic function and pass the features variable to it
+feature_scatter_basic(features)
+
+"""
+Add a regression line to the the scatter plots created as part of feature_scatter() function
+"""
+def feature_scatter_with_regression(features):
+
+    # Set a for loop to iterate through:
+    #   1. Each pair of features (columns) in the list of features defined outside the function
+    for x, y in comb(features, 2):
+
+        # Check the data type of each column using the if function and the dtype attribute
+        # If data type is not float64, skip the iteration using continue statement
+        if iris_df[x].dtype != 'float64' or iris_df[y].dtype != 'float64':
+            continue
+        
+        # Initiate an empty figure as a placeholder for each scatter plot
+        plt.figure() 
+
+        # Calculate the slope (m) and intercept (c) of the linear regression line using numpy's polyfit function
+        m,c = np.polyfit(iris_df[x], iris_df[y], 1)
+
+        # Print the slope and intercept values for the respective feature pair
+        # Use f-string formatting for readable output 
+        print(f"Linear regression for {x} vs {y}:\nSlope (m):\t{m}\nIntercept (c):\t{c}\n\n")
+
+        # Create a scatter plot 
+        sns.scatterplot(data=iris_df, x = x, y = y, hue='class', marker='v')
+
+        # Set axes labels 
+        plt.xlabel(f'{x} (cm)')
+        plt.ylabel(f'{y} (cm)')
+
+        # Fit the regression line
+        plt.plot(iris_df[x], m * iris_df[x] + c, color = 'red', label = 'Regression line')
+
+        # Add legend
+        plt.legend()
+
+        # Add title
+        plt.title(f'{x} vs {y} relationship')
+
+        # The savefig() function saves the plot to a file as ".png"
+        plt.savefig(f'Scatter {x} vs {y}.png') 
+        
+        # Show the plot
+        plt.show()
+
+        # Close the plot
+        plt.close()
+
+# Call the feature_scatter_with_regression function and pass the features variable to it
+feature_scatter_with_regression(features)
+
+"""
+Calculate Correlations
+"""
+# Use the corr() function to calculate the correlation matrix
+# Pass the method as 'pearson' and set numeric_only to True to include only numerical columns
+corr_matrix = iris_df.corr('pearson', numeric_only=True)
+
+# Print the correlation matrix
+print(f'Correlation matrix:\n\n{corr_matrix}')
+
+"""
+Create a heatmap to visualize the correlation matrix
+"""
+# Plot figure and axes using the subplots() function
+fig, ax = plt.subplots()
+
+# Set x & y axes labels
+labels = corr_matrix.columns
+
+# Generate a heatmap using matplotlib imshow() function
+# Use cmap='PRGn' to set plot colors for better interpretation of results
+ax.imshow(corr_matrix, cmap='PRGn')
+
+# Set custom ticks and label them with the respective feature names
+ax.set_xticks(range(len(labels)), labels=labels, rotation=45, ha="right")
+ax.set_yticks(range(len(labels)), labels=labels)
+
+# Loop over data dimensions and create text annotations
+for i in range(len(labels)):
+    for j in range(len(labels)):
+        # Use the text() function to add text annotations to the heatmap
+        # Use the iloc[] function to access the correlation values in the matrix
+        text = ax.text(j, i, f"{corr_matrix.iloc[i, j]:.2f}",
+                       ha="center", va="center", color="w")
+# Set title
+ax.set_title("Correlation between Iris features ")
+
+# Show the plot
+plt.show()
+
+# Close the plot
+plt.close()

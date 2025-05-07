@@ -1,10 +1,10 @@
 # Programming And Scripting
 by Oksana Abrosimova
 
-This repository contains Progect materials related to the **Programming And Sripting** study module. To demonstrate learning and understanding of the core Python concepts learned throughout the programm, the analysis.py program was written providing analysis of the famous Iris data set.
+This repository contains Progect materials related to the **Programming And Sripting** study module. To demonstrate learning and understanding of the core Python concepts learned throughout the programm, the *analysis.py* program was written providing analysis of the famous Iris data set.
 
 ## Dataset
-Data that forms the foundation of the Iris dataset was originally collected by Edgar Anderson, an American botanist, likely between 1928 and 1935. It was later published in 1936, by Ronald A. Fisher, a British mathematician, statistician and biologist in his article *"The Use of Multiple Measurements in Taxonomic Problems"*,. The paper explored how measurements could be used to distinguish classes between species and highlighted the importance of accuracy in those measurements.
+Data that forms the foundation of the Iris dataset was originally collected by Edgar Anderson, an American botanist, likely between 1928 and 1935. It was later published in 1936, by Ronald A. Fisher, a British mathematician, statistician and biologist in his article *"The Use of Multiple Measurements in Taxonomic Problems"*. The paper explored how measurements could be used to distinguish classes between species and highlighted the importance of accuracy in those measurements.
 
 Despite its simplicity, the dataset has remained widely used in data science, machine learning, and statistical analyses to this day. Its popularity can be attributed to several factors: a small and clear structure, class component, a set of petal a sepal measures. These characteristics make it ideal for learning, testing statistical models and experimenting with classification techniques. 
 

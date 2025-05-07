@@ -4,6 +4,10 @@ by Oksana Abrosimova
 This repository contains Progect materials related to the **Programming And Sripting** study module. To demonstrate learning and understanding of the core Python concepts learned throughout the programm, the analysis.py program was written providing analysis of the famous Iris data set.
 
 ## Dataset
+Data that forms the foundation of the Iris dataset was originally collected by Edgar Anderson, an American botanist, likely between 1928 and 1935. It was later published in 1936, by Ronald A. Fisher, a British mathematician, statistician and biologist in his article *"The Use of Multiple Measurements in Taxonomic Problems"*,. The paper explored how measurements could be used to distinguish classes between species and highlighted the importance of accuracy in those measurements.
+
+Despite its simplicity, the dataset has remained widely used in data science, machine learning, and statistical analyses to this day. Its popularity can be attributed to several factors: a small and clear structure, class component, a set of petal a sepal measures. These characteristics make it ideal for learning, testing statistical models and experimenting with classification techniques. 
+
 At a high level, the Iris dataset contains measurements of three Iris flower species. 
 
 It includes 150 rows and 5 columns: 
@@ -14,7 +18,7 @@ It includes 150 rows and 5 columns:
     - petal width (cm)
 - The fifth column contains categorical data representing the class (species) of each flower: Setosa, Versicolor, Virginica.
 
-Each row in the dataset represents one flower sample, shoing its four measurements and a corresponding class. There are 50 samples per each Iris species.
+Each row in the dataset represents one flower sample, showing its four measurements and a corresponding species. There are 50 samples per each Iris species.
 
 ## Dataset Source
 >Fisher, R. (1936). Iris [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C56C76.
